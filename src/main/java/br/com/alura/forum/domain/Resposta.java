@@ -1,14 +1,19 @@
 package br.com.alura.forum.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
 public class Resposta implements Serializable {
 
     private static final long serialVersionUID = -2481331327558613301L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String mensagem;
-    private br.com.alura.forum.domain.Topico topico;
+    @ManyToOne
+    private Topico topico;
     private LocalDateTime dataCriacao = LocalDateTime.now();
     private br.com.alura.forum.domain.Usuario autor;
     private Boolean solucao = false;
