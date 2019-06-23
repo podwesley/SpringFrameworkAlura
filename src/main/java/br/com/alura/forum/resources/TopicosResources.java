@@ -3,6 +3,7 @@ package br.com.alura.forum.resources;
 import br.com.alura.forum.domain.Topico;
 import br.com.alura.forum.dto.TopicoDTO;
 import br.com.alura.forum.dto.TopicosPorCursoDTO;
+import br.com.alura.forum.dto.UsuarioTopicosDTO;
 import br.com.alura.forum.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -32,13 +31,19 @@ public class TopicosResources {
         return topicoService.listarTodos();
     }
 
+    //TODO situação a ser corrigida posteriormente com a classe Optional
     @GetMapping(value = "/pesquisar/{pesquisarTopicosPorCurso}")
     public List<TopicosPorCursoDTO> buscarPeloNomeDoCurso(@PathVariable("pesquisarTopicosPorCurso") String nomeCurso) {
-        System.out.println(nomeCurso);
-        Optional<Topico> topico = topicoService.buscarPorNomeDoCurso(nomeCurso);
-        Topico topico1 = topico.get();
-        System.out.println(topico.get());
 
-        return TopicosPorCursoDTO.converterTopicoToTopicoPorCursoDTO(Arrays.asList(topico.get()));
+        return TopicosPorCursoDTO.converterTopicoToTopicoPorCursoDTO(topicoService.buscarPorNomeDoCurso(nomeCurso));
+    }
+
+    @GetMapping(value = "{nomeUsuario}")
+    public List<UsuarioTopicosDTO>buscarTopicosDoUsuario(@PathVariable("nomeUsuario") String nomeUsuario){
+
+        return UsuarioTopicosDTO.converterTopicoToUsuarioTopicoDTO(topicoService.buscarTopicosDoUsuario(nomeUsuario));
     }
 }
+
+
+

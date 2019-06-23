@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TopicoService {
@@ -20,7 +19,12 @@ public class TopicoService {
         return topicoRepository.findAll();
     }
 
-    public Optional<Topico> buscarPorNomeDoCurso(String nomeCurso) {
-        return Optional.ofNullable(topicoRepository.findByCursoNome(nomeCurso));
+    public List<Topico> buscarPorNomeDoCurso(String nomeCurso) {
+        return topicoRepository.findByCursoNome(nomeCurso);
+    }
+
+
+    public List<Topico> buscarTopicosDoUsuario(String nomeUsuario) {
+        return topicoRepository.findByAutorNome(nomeUsuario);
     }
 }

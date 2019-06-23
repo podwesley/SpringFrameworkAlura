@@ -15,7 +15,7 @@ public class TopicosPorCursoDTO {
     public TopicosPorCursoDTO(Topico topico) {
         this.id = topico.getId();
         this.titulo = topico.getTitulo();
-        this.curso.setNome(topico.getCurso().getNome());
+        this.curso = topico.getCurso();
     }
 
     public static List<TopicosPorCursoDTO> converterTopicoToTopicoPorCursoDTO(List<Topico> topico) {
