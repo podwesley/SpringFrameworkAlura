@@ -13,18 +13,22 @@ public class TopicoService {
     @Autowired
     TopicoRepository topicoRepository;
 
-
     public List<Topico> listarTodos() {
 
         return topicoRepository.findAll();
     }
 
-    public List<Topico> buscarPorNomeDoCurso(String nomeCurso) {
+    public List<Topico> buscarPorTopicosDoCurso(String nomeCurso) {
         return topicoRepository.findByCursoNome(nomeCurso);
     }
 
 
     public List<Topico> buscarTopicosDoUsuario(String nomeUsuario) {
         return topicoRepository.findByAutorNome(nomeUsuario);
+    }
+
+    public void salvar(Topico topico) {
+        topicoRepository.save(topico);
+
     }
 }
