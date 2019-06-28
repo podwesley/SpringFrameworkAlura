@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
 @RestController
 @RequestMapping("/topicos")
 public class TopicosResources {
@@ -51,7 +52,7 @@ public class TopicosResources {
     }
 
     @PostMapping
-    public ResponseEntity<TopicoDTO> cadastrar(@RequestBody TopicoFormDTO topicoForm, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<TopicoDTO> cadastrar(@RequestBody @Valid TopicoFormDTO topicoForm, UriComponentsBuilder uriComponentsBuilder) {
         Topico topico = topicoForm.converterTopicoFormDTOtoTopico(topicoForm.getTitulo(), topicoForm.getMensagem() , cursoService.buscarPorNome(topicoForm.getNomeCurso()));
         topicoService.salvar(topico);
 
