@@ -31,4 +31,16 @@ public class TopicoService {
         topicoRepository.save(topico);
 
     }
+
+    public Topico buscarTopicoPorId(Long id) {
+
+        return topicoRepository.findById(id).orElse(new Topico());
+
+    }
+
+    public void deletarUmTopico(Long id) {
+
+        topicoRepository.deleteById(id);
+
+    }
 }

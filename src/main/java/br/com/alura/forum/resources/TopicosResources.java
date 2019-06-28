@@ -1,10 +1,7 @@
 package br.com.alura.forum.resources;
 
 import br.com.alura.forum.domain.Topico;
-import br.com.alura.forum.dto.TopicoDTO;
-import br.com.alura.forum.dto.TopicoFormDTO;
-import br.com.alura.forum.dto.TopicosPorCursoDTO;
-import br.com.alura.forum.dto.UsuarioTopicosDTO;
+import br.com.alura.forum.dto.*;
 import br.com.alura.forum.service.CursoService;
 import br.com.alura.forum.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 @RestController
 @RequestMapping("/topicos")
 public class TopicosResources {
@@ -42,7 +43,7 @@ public class TopicosResources {
         return TopicosPorCursoDTO.converterTopicoToTopicoPorCursoDTO(topicoService.buscarPorTopicosDoCurso(nomeCurso));
     }
 
-    @GetMapping(value = "{nomeUsuario}")
+    @GetMapping(value = "/pesquisar/{nomeUsuario}")
     public List<UsuarioTopicosDTO> buscarTopicosDoUsuario(@PathVariable("nomeUsuario") String nomeUsuario) {
 
         return UsuarioTopicosDTO.converterTopicoToUsuarioTopicoDTO(topicoService.buscarTopicosDoUsuario(nomeUsuario));
@@ -50,12 +51,30 @@ public class TopicosResources {
 
     @PostMapping
     public ResponseEntity<TopicoDTO> cadastrar(@RequestBody @Valid TopicoFormDTO topicoForm, UriComponentsBuilder uriComponentsBuilder) {
-        Topico topico = topicoForm.converterTopicoFormDTOtoTopico(topicoForm.getTitulo(), topicoForm.getMensagem() , cursoService.buscarPorNome(topicoForm.getNomeCurso()));
+        Topico topico = topicoForm.converterTopicoFormDTOtoTopico(topicoForm.getTitulo(), topicoForm.getMensagem(), cursoService.buscarPorNome(topicoForm.getNomeCurso()));
         topicoService.salvar(topico);
 
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDTO(topico));
     }
+
+    @GetMapping(value = "{id}")
+    public DetalharTopicoDTO listarDetalhesPorTopico(@PathVariable("id") Long id) {
+        Topico topico = topicoService.buscarTopicoPorId(id);
+        return new DetalharTopicoDTO(topico);
+    }
+
+    @DeleteMapping(value = "{id}")
+    public void deletarUmTopicoNaMoral(@PathVariable("id") Long id){
+        topicoService.deletarUmTopico(id);
+    }
+
+    @PutMapping(value = "{id}")
+    public void alterarMensagemDeUmTopico(@RequestBody String mensagem, @PathVariable("id") Long id){
+        Topico topico = topicoService.buscarTopicoPorId(id);
+        topicoService.salvar(topico);
+    }
+
 }
 
 
