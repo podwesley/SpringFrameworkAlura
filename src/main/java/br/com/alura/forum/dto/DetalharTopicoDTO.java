@@ -4,6 +4,7 @@ import br.com.alura.forum.domain.StatusTopico;
 import br.com.alura.forum.domain.Topico;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,12 @@ public class DetalharTopicoDTO {
         this.dataDeCriacao = topico.getDataCriacao();
         this.nomeAutor = topico.getAutor().getNome();
         this.statusTopico = topico.getStatus();
+        this.respostas = new ArrayList<>();
+        this.respostas.addAll(topico.getRespostas().stream().map(RespostaDTO::new).collect(Collectors.toList()));
+    }
 
+    public static List<DetalharTopicoDTO> converterToTopicoDTO(List<Topico> topico) {
+        return topico.stream().map(DetalharTopicoDTO::new).collect(Collectors.toList());
     }
 
     public List<RespostaDTO> getRespostas() {
@@ -49,10 +55,6 @@ public class DetalharTopicoDTO {
 
     public void setStatusTopico(StatusTopico statusTopico) {
         this.statusTopico = statusTopico;
-    }
-
-    public static List<DetalharTopicoDTO> converterToTopicoDTO(List<Topico> topico) {
-        return topico.stream().map(DetalharTopicoDTO::new).collect(Collectors.toList());
     }
 
     public Long getId() {
