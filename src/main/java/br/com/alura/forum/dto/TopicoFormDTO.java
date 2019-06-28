@@ -2,9 +2,7 @@ package br.com.alura.forum.dto;
 
 import br.com.alura.forum.domain.Curso;
 import br.com.alura.forum.domain.Topico;
-import br.com.alura.forum.repository.CursoRepository;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,13 +15,12 @@ public class TopicoFormDTO {
     private String titulo;
     @NotNull
     @NotEmpty
-    @Length(min = 5, max = 20)
+
     private String mensagem;
     @NotNull
     @NotEmpty
-    @Length(min = 5, max = 20)
-    private String nomeCurso;
 
+    private String nomeCurso;
 
     public TopicoFormDTO(String titulo, String mensagem, String nomeCurso) {
         this.titulo = titulo;
@@ -67,7 +64,7 @@ public class TopicoFormDTO {
         return "TopicoFormDTO{" +
                 "titulo='" + titulo + '\'' +
                 ", mensagem='" + mensagem + '\'' +
-                ", nomeCurso='" + nomeCurso + '\''+
+                ", nomeCurso='" + nomeCurso + '\'' +
                 '}';
     }
 }

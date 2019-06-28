@@ -5,7 +5,6 @@ import br.com.alura.forum.dto.TopicoDTO;
 import br.com.alura.forum.dto.TopicoFormDTO;
 import br.com.alura.forum.dto.TopicosPorCursoDTO;
 import br.com.alura.forum.dto.UsuarioTopicosDTO;
-import br.com.alura.forum.repository.CursoRepository;
 import br.com.alura.forum.service.CursoService;
 import br.com.alura.forum.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
 @RestController
 @RequestMapping("/topicos")
 public class TopicosResources {
