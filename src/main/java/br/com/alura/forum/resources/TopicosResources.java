@@ -69,10 +69,10 @@ public class TopicosResources {
         topicoService.deletarUmTopico(id);
     }
 
+    //TODO - Bug do mau para resolver neste endpoint.
     @PutMapping(value = "{id}")
-    public void alterarMensagemDeUmTopico(@RequestBody String mensagem, @PathVariable("id") Long id){
-        Topico topico = topicoService.buscarTopicoPorId(id);
-        topicoService.salvar(topico);
+    public ResponseEntity<TopicoDTO> alterarMensagemDeUmTopico(@PathVariable("id") Long id,  AtualizacaoTopicoFormDTO atualizacaotopicoForm){
+        return ResponseEntity.ok().body(new TopicoDTO(topicoService.atualizar(id, atualizacaotopicoForm)));
     }
 
 }

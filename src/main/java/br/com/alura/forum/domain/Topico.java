@@ -30,6 +30,10 @@ public class Topico implements Serializable {
         this.curso = curso;
     }
 
+    public Topico(String mensagem){
+        this.mensagem = mensagem;
+    }
+
     public Topico() {
 
     }

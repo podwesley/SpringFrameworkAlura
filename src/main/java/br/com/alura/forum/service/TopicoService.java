@@ -1,6 +1,7 @@
 package br.com.alura.forum.service;
 
 import br.com.alura.forum.domain.Topico;
+import br.com.alura.forum.dto.AtualizacaoTopicoFormDTO;
 import br.com.alura.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,13 @@ public class TopicoService {
 
         topicoRepository.deleteById(id);
 
+    }
+
+    public Topico atualizar(Long id, AtualizacaoTopicoFormDTO atualizacaotopicoForm) {
+
+        Topico topico = buscarTopicoPorId(id);
+        topico.setTitulo(atualizacaotopicoForm.getMensagem());
+
+        return topicoRepository.save(atualizacaotopicoForm.converterAtualizacaoTopicoFormDTOtoTopico(topico));
     }
 }
