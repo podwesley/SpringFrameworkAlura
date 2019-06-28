@@ -18,6 +18,9 @@ public class DetalharTopicoDTO {
     private StatusTopico statusTopico;
     private List<RespostaDTO> respostas;
 
+    public DetalharTopicoDTO() {
+    }
+
     public DetalharTopicoDTO(Topico topico) {
         this.id = topico.getId();
         this.titulo = topico.getTitulo();
@@ -30,10 +33,26 @@ public class DetalharTopicoDTO {
     }
 
     public static List<DetalharTopicoDTO> converterToTopicoDTO(List<Topico> topico) {
-        return topico.stream().map(DetalharTopicoDTO::new).collect(Collectors.toList());
+        return topico.stream().map(DetalharTopicoDTO::convertTopicoToDetalharTopicoDTO).collect(Collectors.toList());
     }
 
+    public static DetalharTopicoDTO convertTopicoToDetalharTopicoDTO(Topico topico){
+        DetalharTopicoDTO payload = new DetalharTopicoDTO();
+        payload.setDataDeCriacao(topico.getDataCriacao());
+        payload.setId(topico.getId());
+        payload.setMensagem(topico.getMensagem());
+        payload.setNomeAutor(topico.getAutor().getNome());
+        payload.getRespostas().addAll(topico.getRespostas().stream().map(RespostaDTO::convertRespostaToDTO).collect(Collectors.toList()));
+        payload.setStatusTopico(topico.getStatus());
+        payload.setTitulo(topico.getTitulo());
+        return  payload;
+    }
+
+
     public List<RespostaDTO> getRespostas() {
+        if(respostas == null){
+            respostas = new ArrayList<>();
+        }
         return respostas;
     }
 
