@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -35,9 +34,9 @@ public class TopicoService {
 
     }
 
-    public Topico buscarTopicoPorId(Long id) {
+    public Optional<Topico> buscarTopicoPorId(Long id) {
         Optional<Topico> topicoOptional = topicoRepository.findById(id);
-        return topicoOptional.orElseThrow(() -> new NoSuchElementException("Não foi possivfel achar um tópico"));
+        return topicoOptional;
 
     }
 
@@ -48,14 +47,15 @@ public class TopicoService {
     }
 
     public Topico atualizar(Long id, AtualizacaoTopicoFormDTO atualizacaotopicoForm) {
-        try {
-            Topico topico = buscarTopicoPorId(id);
-            topico.setTitulo(atualizacaotopicoForm.getMensagem());
-            topicoRepository.saveAndFlush(topico);
 
-            return topico;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        Optional<Topico> topico = buscarTopicoPorId(id);
+
+        if (topico.isPresent()) {
+            topico.get().setMensagem(atualizacaotopicoForm.getMensagem());
+            topicoRepository.saveAndFlush(topico.get());
+            return topico.get();
+        } else {
+
             return new Topico();
         }
     }

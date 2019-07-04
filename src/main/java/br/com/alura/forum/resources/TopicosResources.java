@@ -9,12 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -59,24 +57,43 @@ public class TopicosResources {
     }
 
     @GetMapping(value = "{id}")
-    public DetalharTopicoDTO listarDetalhesPorTopico(@PathVariable("id") Long id) {
-        Topico topico = topicoService.buscarTopicoPorId(id);
-        return new DetalharTopicoDTO(topico);
+    public ResponseEntity<DetalharTopicoDTO> listarDetalhesPorTopico(@PathVariable("id") Long id) {
+
+        Optional<Topico> topicoOptional = topicoService.buscarTopicoPorId(id);
+
+        if (topicoOptional.isPresent()) {
+
+            return ResponseEntity.ok().body(new DetalharTopicoDTO(topicoOptional.get()));
+
+        } else return ResponseEntity.notFound().build();
+
     }
 
     @DeleteMapping(value = "{id}")
-    public void deletarUmTopicoNaMoral(@PathVariable("id") Long id){
-        topicoService.deletarUmTopico(id);
+    public ResponseEntity deletarUmTopicoNaMoral(@PathVariable("id") Long id) {
+
+        Optional<Topico> topicoOptional = topicoService.buscarTopicoPorId(id);
+
+        if (topicoOptional.isPresent()) {
+            topicoService.deletarUmTopico(id);
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.notFound().build();
+
+
     }
 
     //TODO - Bug do mau para resolver neste endpoint.
     @PutMapping(value = "{id}")
-    public ResponseEntity<TopicoDTO> alterarMensagemDeUmTopico(@PathVariable("id") Long id,
-                                                               @RequestBody AtualizacaoTopicoFormDTO atualizacaotopicoForm){
-        Topico topicoAtualizado = topicoService.atualizar(id, atualizacaotopicoForm);
-        return ResponseEntity.ok().body(new TopicoDTO(topicoAtualizado));
-    }
+    public ResponseEntity<TopicoDTO> alterarMensagemDeUmTopico(@PathVariable("id") Long id, @RequestBody @Valid AtualizacaoTopicoFormDTO atualizacaotopicoForm) {
 
+        Optional<Topico> topico = topicoService.buscarTopicoPorId(id);
+
+        if (topico.isPresent()) {
+            Topico topicoAtualizado = topicoService.atualizar(id, atualizacaotopicoForm);
+            return ResponseEntity.ok().body(new TopicoDTO(topicoAtualizado));
+        } else return ResponseEntity.notFound().build();
+
+    }
 }
 
 

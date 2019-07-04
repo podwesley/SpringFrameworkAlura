@@ -1,9 +1,11 @@
 package br.com.alura.forum.dto;
 
 import br.com.alura.forum.domain.Topico;
+import org.hibernate.validator.constraints.Length;
 
 public class AtualizacaoTopicoFormDTO {
 
+    @Length(min = 10 , max = 400)
     private String mensagem;
 
     public AtualizacaoTopicoFormDTO() {
